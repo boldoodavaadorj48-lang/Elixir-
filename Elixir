@@ -1,0 +1,199 @@
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+
+local Window = WindUI:CreateWindow({
+    Title = "Elixir-Ogii hub",
+    Icon = "", 
+    Author = "by .ftgs and .ftgs",
+    
+    OpenButton = {
+        Title = "Open Ogii's Script",
+        Icon = "monitor",
+        CornerRadius = UDim.new(0,16),
+        StrokeThickness = 2,
+        Color = ColorSequence.new(
+            Color3.fromHex("FF0F7B"), 
+            Color3.fromHex("F89B29")
+        ),
+        OnlyMobile = false,
+        Enabled = true,
+        Draggable = true,
+    }
+})
+
+-- WELCOME NOTIFICATION
+WindUI:Notify({
+    Title = "Elixir-Ogii hub",
+    Content = "Welcome To My Script",
+    Duration = 5
+})
+
+-- TABS
+local MainTab = Window:Tab({ Title = "Main", Icon = "bird", Locked = false })
+local TechTab = Window:Tab({ Title = "Tech", Icon = "cpu", Locked = false })
+local HubTab = Window:Tab({ Title = "Hub section", Icon = "layout-grid", Locked = false })
+local AccessoryTab = Window:Tab({ Title = "Accessory", Icon = "package", Locked = false })
+local SettingsTab = Window:Tab({ Title = "Settings", Icon = "settings", Locked = false })
+
+--- TECH SECTION (TOGGLES) ---
+
+TechTab:Toggle({
+    Title = "Instant twisted",
+    Detail = "Executes twisted Base64 source",
+    Value = false,
+    Callback = function(state)
+        if state then
+            WindUI:Notify({Title = "Tech", Content = "Executing...", Duration = 3})
+            local parts = {"aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2xldHVh","bmtpZXQwOTgxMjM0NS1jbXlrL1Rlc3RraWJhL3JlZnMvaGVhZHMv","bWFpbi9lZGZhMzg1ZWY1YzQ3ZDNhLmx1YQ=="}
+            local encoded = table.concat(parts)
+            local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+            local function d(data)
+                data = data:gsub('[^'..b..'=]', '')
+                return (data:gsub('.', function(x)
+                    if x == '=' then return '' end
+                    local r, f = '', (b:find(x) - 1)
+                    for i = 6, 1, -1 do r = r .. (f % 2^i - f % 2^(i-1) > 0 and '1' or '0') end
+                    return r
+                end):gsub('%d%d%d?%d?%d?%d?%d?%d?', function(x)
+                    if #x ~= 8 then return '' end
+                    local c = 0
+                    for i = 1, 8 do c = c + (x:sub(i, i) == '1' and 2^(8-i) or 0) end
+                    return string.char(c)
+                end))
+            end
+            pcall(function() loadstring(game:HttpGet(d(encoded)))() end)
+        end
+    end
+})
+
+TechTab:Toggle({
+    Title = "Instant lethal",
+    Detail = "Executes lethal Jnkie API",
+    Value = false,
+    Callback = function(state)
+        if state then
+            WindUI:Notify({Title = "Tech", Content = "Executing...", Duration = 3})
+            pcall(function() loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/57a4d240a2440f0450986c966469092ccfb8d4797392cb8f469fa8b6e605e64d/download"))() end)
+        end
+    end
+})
+
+TechTab:Toggle({
+    Title = "Oreo",
+    Detail = "Executes Oreo source",
+    Value = false,
+    Callback = function(state)
+        if state then
+            WindUI:Notify({Title = "Tech", Content = "Executing Oreo...", Duration = 3})
+            pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/dinhthanhtuankiet1762009-sudo/Js/refs/heads/main/dd8ef3753bbaf2b2.lua"))() end)
+        end
+    end
+})
+
+TechTab:Toggle({
+    Title = "kiba",
+    Detail = "Executes kiba source",
+    Value = false,
+    Callback = function(state)
+        if state then
+            WindUI:Notify({Title = "Tech", Content = "Executing kiba...", Duration = 3})
+            pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/yqantg-pixel/Find/refs/heads/main/Protected_3334988263341522.lua.txt"))() end)
+        end
+    end
+})
+
+--- HUB SECTION (BUTTONS) ---
+
+HubTab:Button({
+    Title = "Lunar",
+    Callback = function()
+        WindUI:Notify({Title = "Hub", Content = "Loading Lunar...", Duration = 3})
+        pcall(function() loadstring(game:HttpGet("https://pastefy.app/ADhVPN6M/raw"))() end)
+    end
+})
+
+HubTab:Button({
+    Title = "MinhNhat",
+    Callback = function()
+        WindUI:Notify({Title = "Hub", Content = "Loading MinhNhat...", Duration = 3})
+        pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-MinhNhat-Tsb-62161"))() end)
+    end
+})
+
+--- ACCESSORY SECTION (BUTTONS) ---
+
+AccessoryTab:Button({
+    Title = "Headless and Korblox",
+    Callback = function()
+        WindUI:Notify({Title = "Accessory", Content = "Applying effects...", Duration = 3})
+        pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-tsb-client-sided-headless-and-korblox-74593"))() end)
+    end
+})
+
+AccessoryTab:Button({
+    Title = "Erisyphia staff",
+    Callback = function()
+        WindUI:Notify({Title = "Accessory", Content = "Loading Staff...", Duration = 3})
+        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Erisyphia-Staff-made-by-Guestly"))() end)
+    end
+})
+
+AccessoryTab:Button({
+    Title = "Elemental Crystal Shoulder",
+    Callback = function()
+        WindUI:Notify({Title = "Accessory", Content = "Equipping Crystal...", Duration = 3})
+        pcall(function()
+            local player = game:GetService("Players").LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
+            local accessory = Instance.new("Accessory")
+            local handle = Instance.new("Part")
+            handle.Name = "Handle" handle.Size = Vector3.new(1, 1, 1) handle.Parent = accessory
+            accessory.Name = "ShoulderAccessory" accessory.Parent = character
+            local upperTorso = character:FindFirstChild("UpperTorso") or character:FindFirstChild("Torso")
+            if upperTorso then
+                local sAtt = Instance.new("Attachment") sAtt.Position = Vector3.new(1.5, 1.2, 0) sAtt.Parent = upperTorso
+                local aAtt = Instance.new("Attachment") aAtt.Parent = handle
+                local weld = Instance.new("Weld") weld.Part0 = upperTorso weld.Part1 = handle weld.C0 = sAtt.CFrame weld.Parent = handle
+                local mesh = Instance.new("SpecialMesh") mesh.MeshId = "http://www.roblox.com/asset/?id=4504231783" mesh.TextureId = "http://www.roblox.com/asset/?id=4504231784" mesh.Parent = handle
+            end
+        end)
+    end
+})
+
+AccessoryTab:Button({
+    Title = "Friery Horns",
+    Callback = function()
+        WindUI:Notify({Title = "Accessory", Content = "Loading Horns...", Duration = 3})
+        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Fiery-Horns-of-the-Netherworld-made-by-Guestly"))() end)
+    end
+})
+
+--- SETTINGS SECTION ---
+
+SettingsTab:Section({ Title = "Customize Hub" })
+
+SettingsTab:Colorpicker({
+    Title = "Accent Color",
+    Default = Color3.fromHex("FF0F7B"),
+    Callback = function(color)
+        Window:SetColor(color)
+    end
+})
+
+SettingsTab:Slider({
+    Title = "Transparency",
+    Step = 1, Min = 0, Max = 100, Default = 0,
+    Callback = function(value)
+        Window:SetTransparency(value / 100)
+    end
+})
+
+SettingsTab:Section({ Title = "System" })
+
+SettingsTab:Button({
+    Title = "Destroy UI",
+    Callback = function()
+        Window:Destroy()
+    end
+})
+
+MainTab:Select()
