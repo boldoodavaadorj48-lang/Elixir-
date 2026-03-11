@@ -14,7 +14,7 @@ local Window = WindUI:CreateWindow({
             Color3.fromHex("FF0F7B"), 
             Color3.fromHex("F89B29")
         ),
-        OnlyMobile = true, -- Verified: Button will show on Delta/Mobile
+        OnlyMobile = true, 
         Enabled = true,
         Draggable = true,
     }
