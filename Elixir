@@ -28,28 +28,11 @@ local SettingsTab = Window:Tab({ Title = "Settings", Icon = "settings", Locked =
 --- MAIN SECTION ---
 MainTab:Section({ Title = "Combat & Movement" })
 
+-- Fly GUI is now the primary movement tool
 MainTab:Button({
     Title = "Open Fly GUI (v3)",
     Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Gui-Fly-v3-37111"))() end) end
 })
-
-local SpeedValue = 16
-MainTab:Slider({
-    Title = "WalkSpeed",
-    Step = 1, Min = 16, Max = 250, Default = 16,
-    Callback = function(v) SpeedValue = v end
-})
-
-task.spawn(function()
-    while true do
-        pcall(function()
-            if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
-                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = SpeedValue
-            end
-        end)
-        task.wait(0.1)
-    end
-end)
 
 local AimlockEnabled = false
 MainTab:Toggle({
@@ -80,7 +63,7 @@ MainTab:Toggle({
     end
 })
 
---- TECH SECTION (RESTORED) ---
+--- TECH SECTION ---
 TechTab:Toggle({
     Title = "Instant twisted",
     Callback = function(state)
@@ -109,11 +92,11 @@ TechTab:Toggle({ Title = "Instant lethal", Callback = function(s) if s then pcal
 TechTab:Toggle({ Title = "Oreo", Callback = function(s) if s then pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/dinhthanhtuankiet1762009-sudo/Js/refs/heads/main/dd8ef3753bbaf2b2.lua"))() end) end end })
 TechTab:Toggle({ Title = "kiba", Callback = function(s) if s then pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/yqantg-pixel/Find/refs/heads/main/Protected_3334988263341522.lua.txt"))() end) end end })
 
---- HUB SECTION (RESTORED) ---
+--- HUB SECTION ---
 HubTab:Button({ Title = "Lunar", Callback = function() pcall(function() loadstring(game:HttpGet("https://pastefy.app/ADhVPN6M/raw"))() end) end })
 HubTab:Button({ Title = "MinhNhat", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-MinhNhat-Tsb-62161"))() end) end })
 
---- ACCESSORY SECTION (RESTORED) ---
+--- ACCESSORY SECTION ---
 AccessoryTab:Button({ Title = "Headless and Korblox", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-tsb-client-sided-headless-and-korblox-74593"))() end) end })
 AccessoryTab:Button({ Title = "Erisyphia staff", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Erisyphia-Staff-made-by-Guestly"))() end) end })
 AccessoryTab:Button({ Title = "Friery Horns", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Fiery-Horns-of-the-Netherworld-made-by-Guestly"))() end) end })
