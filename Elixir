@@ -25,72 +25,27 @@ local AccessoryTab = Window:Tab({ Title = "Accessory", Icon = "package", Locked 
 local LagTab = Window:Tab({ Title = "Lag Fixes", Icon = "zap", Locked = false })
 local SettingsTab = Window:Tab({ Title = "Settings", Icon = "settings", Locked = false })
 
---- MAIN SECTION (WALKSPEED REMOVED - MOBILITY FIXED) ---
+--- MAIN SECTION ---
 MainTab:Section({ Title = "Combat & Movement" })
 
 MainTab:Button({
-    Title = "Open Fly GUI (v3)",
-    Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Gui-Fly-v3-37111"))() end) end
+    Title = "Aimlock",
+    Detail = "Silent Aim & LockOn",
+    Callback = function() 
+        pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Tsb-Op-Silent-And-LockOn-44541"))() end) 
+    end
 })
 
 MainTab:Button({
-    Title = "Get TP Tool",
-    Detail = "Click anywhere to teleport instantly",
-    Callback = function()
-        local mouse = game.Players.LocalPlayer:GetMouse()
-        local tool = Instance.new("Tool")
-        tool.RequiresHandle = false
-        tool.Name = "TP Tool"
-        tool.Activated:Connect(function()
-            local pos = mouse.Hit.p
-            game.Players.LocalPlayer.Character:MoveTo(pos + Vector3.new(0, 3, 0))
-        end)
-        tool.Parent = game.Players.LocalPlayer.Backpack
+    Title = "Open Fly GUI (v3)",
+    Callback = function() 
+        pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Gui-Fly-v3-37111"))() end) 
     end
 })
 
-MainTab:Toggle({
-    Title = "Infinite Jump",
-    Callback = function(s)
-        _G.InfJump = s
-        game:GetService("UserInputService").JumpRequest:Connect(function()
-            if _G.InfJump then
-                game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
-            end
-        end)
-    end
-})
+--- TECH SECTION ---
+TechTab:Section({ Title = "Tech Scripts" })
 
-local AimlockEnabled = false
-MainTab:Toggle({
-    Title = "Smooth Aimlock",
-    Callback = function(state)
-        AimlockEnabled = state
-        task.spawn(function()
-            local Camera = workspace.CurrentCamera
-            while AimlockEnabled do
-                local closestPlayer = nil
-                local shortestDistance = math.huge
-                for _, v in pairs(game.Players:GetPlayers()) do
-                    if v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
-                        local pos, onScreen = Camera:WorldToViewportPoint(v.Character.PrimaryPart.Position)
-                        if onScreen then
-                            local magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)).magnitude
-                            if magnitude < shortestDistance then
-                                closestPlayer = v
-                                shortestDistance = magnitude
-                            end
-                        end
-                    end
-                end
-                if closestPlayer then Camera.CFrame = CFrame.new(Camera.CFrame.Position, closestPlayer.Character.HumanoidRootPart.Position) end
-                task.wait()
-            end
-        end)
-    end
-})
-
---- TECH SECTION (RESTORED) ---
 TechTab:Toggle({
     Title = "Instant twisted",
     Callback = function(state)
@@ -120,16 +75,23 @@ TechTab:Toggle({ Title = "Oreo", Callback = function(s) if s then pcall(function
 TechTab:Toggle({ Title = "kiba", Callback = function(s) if s then pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/yqantg-pixel/Find/refs/heads/main/Protected_3334988263341522.lua.txt"))() end) end end })
 
 --- HUB SECTION ---
+HubTab:Section({ Title = "Other Hubs" })
 HubTab:Button({ Title = "Lunar", Callback = function() pcall(function() loadstring(game:HttpGet("https://pastefy.app/ADhVPN6M/raw"))() end) end })
 HubTab:Button({ Title = "MinhNhat", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-MinhNhat-Tsb-62161"))() end) end })
 
 --- ACCESSORY SECTION ---
+AccessoryTab:Section({ Title = "Visuals" })
 AccessoryTab:Button({ Title = "Headless and Korblox", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-tsb-client-sided-headless-and-korblox-74593"))() end) end })
 AccessoryTab:Button({ Title = "Erisyphia staff", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Erisyphia-Staff-made-by-Guestly"))() end) end })
 AccessoryTab:Button({ Title = "Friery Horns", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Fiery-Horns-of-the-Netherworld-made-by-Guestly"))() end) end })
 
---- LAG FIXES & SETTINGS ---
+--- LAG FIXES ---
+LagTab:Section({ Title = "Optimization" })
+LagTab:Button({ Title = "Bloxstrap Initiate", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/qwertyui-is-back/Bloxstrap/main/Initiate.lua"))() end) end })
 LagTab:Button({ Title = "Full Graphics Upgrade", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-FULL-GRAPHIC-UPGRADE-4582"))() end) end })
+
+--- SETTINGS ---
+SettingsTab:Section({ Title = "System" })
 SettingsTab:Toggle({ Title = "Anti-AFK", Callback = function(state) if state then _G.AFK = game.Players.LocalPlayer.Idled:Connect(function() game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame) task.wait(1) game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame) end) else if _G.AFK then _G.AFK:Disconnect() end end end })
 SettingsTab:Button({ Title = "Server Hop", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/78n/rejoin/main/hop.lua"))() end) end })
 SettingsTab:Button({ Title = "Rejoin", Callback = function() game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId) end })
