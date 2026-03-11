@@ -14,7 +14,7 @@ local Window = WindUI:CreateWindow({
             Color3.fromHex("FF0F7B"), 
             Color3.fromHex("F89B29")
         ),
-        OnlyMobile = false,
+        OnlyMobile = true, -- FIXED: This is now TRUE so it shows on mobile
         Enabled = true,
         Draggable = true,
     }
@@ -34,15 +34,150 @@ local HubTab = Window:Tab({ Title = "Hub section", Icon = "layout-grid", Locked 
 local AccessoryTab = Window:Tab({ Title = "Accessory", Icon = "package", Locked = false })
 local SettingsTab = Window:Tab({ Title = "Settings", Icon = "settings", Locked = false })
 
---- TECH SECTION (TOGGLES) ---
+--- MAIN SECTION (NEW STUFF) ---
 
-TechTab:Toggle({
-    Title = "Instant twisted",
-    Detail = "Executes twisted Base64 source",
+MainTab:Section({ Title = "Combat & Movement" })
+
+MainTab:Slider({
+    Title = "WalkSpeed",
+    Detail = "Change your movement speed",
+    Step = 1, Min = 16, Max = 250, Default = 16,
+    Callback = function(v) 
+        pcall(function() game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = v end) 
+    end
+})
+
+local NoclipLoop
+MainTab:Toggle({
+    Title = "No Clip",
+    Detail = "Walk through walls",
     Value = false,
     Callback = function(state)
         if state then
-            WindUI:Notify({Title = "Tech", Content = "Executing...", Duration = 3})
+            NoclipLoop = game:GetService("RunService").Stepped:Connect(function()
+                if game.Players.LocalPlayer.Character then
+                    for _, p in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                        if p:IsA("BasePart") then p.CanCollide = false end
+                    end
+                end
+            end)
+        elseif NoclipLoop then
+            NoclipLoop:Disconnect()
+        end
+    end
+})
+
+local AimlockEnabled = false
+MainTab:Toggle({
+    Title = "Smooth Aimlock",
+    Value = false,
+    Callback = function(state)
+        AimlockEnabled = state
+        task.spawn(function()
+            while AimlockEnabled do
+                local closestPlayer = nil
+                local shortestDistance = math.huge
+                local Camera = workspace.CurrentCamera
+                for _, v in pairs(game.Players:GetPlayers()) do
+                    if v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+                        local pos, onScreen = Camera:WorldToViewportPoint(v.Character.PrimaryPart.Position)
+                        if onScreen then
+                            local magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)).magnitude
+                            if magnitude < shortestDistance then
+                                closestPlayer = v
+                                shortestDistance = magnitude
+                            end
+                        end
+                    end
+                end
+                if closestPlayer then
+                    Camera.CFrame = CFrame.new(Camera.CFrame.Position, closestPlayer.Character.HumanoidRootPart.Position)
+                end
+                task.wait()
+            end
+        end)
+    end
+})
+
+MainTab:Toggle({
+    Title = "Auto Block",
+    Value = false,
+    Callback = function(state)
+        _G.AutoBlock = state
+        task.spawn(function()
+            local VIM = game:GetService("VirtualInputManager")
+            while _G.AutoBlock do
+                local char = game.Players.LocalPlayer.Character
+                if char and char:FindFirstChild("HumanoidRootPart") then
+                    local shouldBlock = false
+                    for _, v in pairs(game.Players:GetPlayers()) do
+                        if v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+                            if (char.HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude < 18 then
+                                shouldBlock = true break
+                            end
+                        end
+                    end
+                    VIM:SendKeyEvent(shouldBlock, Enum.KeyCode.F, false, game)
+                end
+                task.wait(0.1)
+            end
+        end)
+    end
+})
+
+MainTab:Section({ Title = "Visuals" })
+
+MainTab:Toggle({
+    Title = "Fullbright & No Shadow",
+    Value = false,
+    Callback = function(state)
+        _G.FullBright = state
+        task.spawn(function()
+            while _G.FullBright do
+                game.Lighting.Brightness = 2
+                game.Lighting.GlobalShadows = false
+                game.Lighting.ClockTime = 14
+                task.wait(0.5)
+            end
+        end)
+    end
+})
+
+MainTab:Toggle({
+    Title = "Player ESP",
+    Value = false,
+    Callback = function(state)
+        _G.ESP = state
+        while _G.ESP do
+            for _, v in pairs(game.Players:GetPlayers()) do
+                if v ~= game.Players.LocalPlayer and v.Character and not v.Character:FindFirstChild("Highlight") then
+                    Instance.new("Highlight", v.Character).FillColor = Color3.fromHex("FF0F7B")
+                end
+            end
+            task.wait(1)
+        end
+        if not state then
+            for _, v in pairs(game.Players:GetPlayers()) do
+                if v.Character and v.Character:FindFirstChild("Highlight") then v.Character.Highlight:Destroy() end
+            end
+        end
+    end
+})
+
+MainTab:Button({
+    Title = "No Camera Shake",
+    Callback = function()
+        pcall(function() game.Players.LocalPlayer.PlayerGui.Scripts.CameraShake:Destroy() end)
+    end
+})
+
+--- TECH SECTION (ORIGINAL) ---
+
+TechTab:Toggle({
+    Title = "Instant twisted",
+    Value = false,
+    Callback = function(state)
+        if state then
             local parts = {"aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2xldHVh","bmtpZXQwOTgxMjM0NS1jbXlrL1Rlc3RraWJhL3JlZnMvaGVhZHMv","bWFpbi9lZGZhMzg1ZWY1YzQ3ZDNhLmx1YQ=="}
             local encoded = table.concat(parts)
             local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
@@ -65,135 +200,25 @@ TechTab:Toggle({
     end
 })
 
-TechTab:Toggle({
-    Title = "Instant lethal",
-    Detail = "Executes lethal Jnkie API",
-    Value = false,
-    Callback = function(state)
-        if state then
-            WindUI:Notify({Title = "Tech", Content = "Executing...", Duration = 3})
-            pcall(function() loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/57a4d240a2440f0450986c966469092ccfb8d4797392cb8f469fa8b6e605e64d/download"))() end)
-        end
-    end
-})
+TechTab:Toggle({ Title = "Instant lethal", Callback = function(s) if s then loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/57a4d240a2440f0450986c966469092ccfb8d4797392cb8f469fa8b6e605e64d/download"))() end end })
+TechTab:Toggle({ Title = "Oreo", Callback = function(s) if s then loadstring(game:HttpGet("https://raw.githubusercontent.com/dinhthanhtuankiet1762009-sudo/Js/refs/heads/main/dd8ef3753bbaf2b2.lua"))() end end })
+TechTab:Toggle({ Title = "kiba", Callback = function(s) if s then loadstring(game:HttpGet("https://raw.githubusercontent.com/yqantg-pixel/Find/refs/heads/main/Protected_3334988263341522.lua.txt"))() end end })
 
-TechTab:Toggle({
-    Title = "Oreo",
-    Detail = "Executes Oreo source",
-    Value = false,
-    Callback = function(state)
-        if state then
-            WindUI:Notify({Title = "Tech", Content = "Executing Oreo...", Duration = 3})
-            pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/dinhthanhtuankiet1762009-sudo/Js/refs/heads/main/dd8ef3753bbaf2b2.lua"))() end)
-        end
-    end
-})
+--- HUB SECTION (ORIGINAL) ---
 
-TechTab:Toggle({
-    Title = "kiba",
-    Detail = "Executes kiba source",
-    Value = false,
-    Callback = function(state)
-        if state then
-            WindUI:Notify({Title = "Tech", Content = "Executing kiba...", Duration = 3})
-            pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/yqantg-pixel/Find/refs/heads/main/Protected_3334988263341522.lua.txt"))() end)
-        end
-    end
-})
+HubTab:Button({ Title = "Lunar", Callback = function() loadstring(game:HttpGet("https://pastefy.app/ADhVPN6M/raw"))() end })
+HubTab:Button({ Title = "MinhNhat", Callback = function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-MinhNhat-Tsb-62161"))() end })
 
---- HUB SECTION (BUTTONS) ---
+--- ACCESSORY SECTION (ORIGINAL) ---
 
-HubTab:Button({
-    Title = "Lunar",
-    Callback = function()
-        WindUI:Notify({Title = "Hub", Content = "Loading Lunar...", Duration = 3})
-        pcall(function() loadstring(game:HttpGet("https://pastefy.app/ADhVPN6M/raw"))() end)
-    end
-})
+AccessoryTab:Button({ Title = "Headless and Korblox", Callback = function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-tsb-client-sided-headless-and-korblox-74593"))() end })
+AccessoryTab:Button({ Title = "Erisyphia staff", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Erisyphia-Staff-made-by-Guestly"))() end })
+AccessoryTab:Button({ Title = "Friery Horns", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Fiery-Horns-of-the-Netherworld-made-by-Guestly"))() end })
 
-HubTab:Button({
-    Title = "MinhNhat",
-    Callback = function()
-        WindUI:Notify({Title = "Hub", Content = "Loading MinhNhat...", Duration = 3})
-        pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-MinhNhat-Tsb-62161"))() end)
-    end
-})
+--- SETTINGS SECTION (ORIGINAL) ---
 
---- ACCESSORY SECTION (BUTTONS) ---
-
-AccessoryTab:Button({
-    Title = "Headless and Korblox",
-    Callback = function()
-        WindUI:Notify({Title = "Accessory", Content = "Applying effects...", Duration = 3})
-        pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-tsb-client-sided-headless-and-korblox-74593"))() end)
-    end
-})
-
-AccessoryTab:Button({
-    Title = "Erisyphia staff",
-    Callback = function()
-        WindUI:Notify({Title = "Accessory", Content = "Loading Staff...", Duration = 3})
-        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Erisyphia-Staff-made-by-Guestly"))() end)
-    end
-})
-
-AccessoryTab:Button({
-    Title = "Elemental Crystal Shoulder",
-    Callback = function()
-        WindUI:Notify({Title = "Accessory", Content = "Equipping Crystal...", Duration = 3})
-        pcall(function()
-            local player = game:GetService("Players").LocalPlayer
-            local character = player.Character or player.CharacterAdded:Wait()
-            local accessory = Instance.new("Accessory")
-            local handle = Instance.new("Part")
-            handle.Name = "Handle" handle.Size = Vector3.new(1, 1, 1) handle.Parent = accessory
-            accessory.Name = "ShoulderAccessory" accessory.Parent = character
-            local upperTorso = character:FindFirstChild("UpperTorso") or character:FindFirstChild("Torso")
-            if upperTorso then
-                local sAtt = Instance.new("Attachment") sAtt.Position = Vector3.new(1.5, 1.2, 0) sAtt.Parent = upperTorso
-                local aAtt = Instance.new("Attachment") aAtt.Parent = handle
-                local weld = Instance.new("Weld") weld.Part0 = upperTorso weld.Part1 = handle weld.C0 = sAtt.CFrame weld.Parent = handle
-                local mesh = Instance.new("SpecialMesh") mesh.MeshId = "http://www.roblox.com/asset/?id=4504231783" mesh.TextureId = "http://www.roblox.com/asset/?id=4504231784" mesh.Parent = handle
-            end
-        end)
-    end
-})
-
-AccessoryTab:Button({
-    Title = "Friery Horns",
-    Callback = function()
-        WindUI:Notify({Title = "Accessory", Content = "Loading Horns...", Duration = 3})
-        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Fiery-Horns-of-the-Netherworld-made-by-Guestly"))() end)
-    end
-})
-
---- SETTINGS SECTION ---
-
-SettingsTab:Section({ Title = "Customize Hub" })
-
-SettingsTab:Colorpicker({
-    Title = "Accent Color",
-    Default = Color3.fromHex("FF0F7B"),
-    Callback = function(color)
-        Window:SetColor(color)
-    end
-})
-
-SettingsTab:Slider({
-    Title = "Transparency",
-    Step = 1, Min = 0, Max = 100, Default = 0,
-    Callback = function(value)
-        Window:SetTransparency(value / 100)
-    end
-})
-
-SettingsTab:Section({ Title = "System" })
-
-SettingsTab:Button({
-    Title = "Destroy UI",
-    Callback = function()
-        Window:Destroy()
-    end
-})
+SettingsTab:Colorpicker({ Title = "Accent Color", Default = Color3.fromHex("FF0F7B"), Callback = function(color) Window:SetColor(color) end })
+SettingsTab:Slider({ Title = "Transparency", Min = 0, Max = 100, Default = 0, Callback = function(v) Window:SetTransparency(v/100) end })
+SettingsTab:Button({ Title = "Destroy UI", Callback = function() Window:Destroy() end })
 
 MainTab:Select()
