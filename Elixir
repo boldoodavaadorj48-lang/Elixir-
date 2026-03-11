@@ -10,21 +10,11 @@ local Window = WindUI:CreateWindow({
         Icon = "monitor",
         CornerRadius = UDim.new(0,16),
         StrokeThickness = 2,
-        Color = ColorSequence.new(
-            Color3.fromHex("FF0F7B"), 
-            Color3.fromHex("F89B29")
-        ),
+        Color = ColorSequence.new(Color3.fromHex("FF0F7B"), Color3.fromHex("F89B29")),
         OnlyMobile = true, 
         Enabled = true,
         Draggable = true,
     }
-})
-
--- WELCOME NOTIFICATION
-WindUI:Notify({
-    Title = "Elixir-Ogii hub",
-    Content = "All Systems Active - Mobile Optimized",
-    Duration = 5
 })
 
 -- TABS
@@ -36,45 +26,34 @@ local LagTab = Window:Tab({ Title = "Lag Fixes", Icon = "zap", Locked = false })
 local SettingsTab = Window:Tab({ Title = "Settings", Icon = "settings", Locked = false })
 
 --- MAIN SECTION ---
-
 MainTab:Section({ Title = "Combat & Movement" })
 
--- Fly GUI Button
 MainTab:Button({
     Title = "Open Fly GUI (v3)",
-    Detail = "Loads a separate flying menu",
-    Callback = function()
-        pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Gui-Fly-v3-37111"))() end)
-    end
+    Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Gui-Fly-v3-37111"))() end) end
 })
 
--- WalkSpeed with Mobile Fix Loop
 local SpeedValue = 16
 MainTab:Slider({
     Title = "WalkSpeed",
-    Detail = "Slide to change speed (Fixed for Mobile)",
     Step = 1, Min = 16, Max = 250, Default = 16,
     Callback = function(v) SpeedValue = v end
 })
 
--- Permanent Speed Loop (Beats TSB anti-speed)
 task.spawn(function()
     while true do
         pcall(function()
-            local char = game.Players.LocalPlayer.Character
-            if char and char:FindFirstChild("Humanoid") then
-                char.Humanoid.WalkSpeed = SpeedValue
+            if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = SpeedValue
             end
         end)
         task.wait(0.1)
     end
 end)
 
--- Smooth Aimlock
 local AimlockEnabled = false
 MainTab:Toggle({
     Title = "Smooth Aimlock",
-    Value = false,
     Callback = function(state)
         AimlockEnabled = state
         task.spawn(function()
@@ -94,125 +73,55 @@ MainTab:Toggle({
                         end
                     end
                 end
-                if closestPlayer then
-                    Camera.CFrame = CFrame.new(Camera.CFrame.Position, closestPlayer.Character.HumanoidRootPart.Position)
-                end
+                if closestPlayer then Camera.CFrame = CFrame.new(Camera.CFrame.Position, closestPlayer.Character.HumanoidRootPart.Position) end
                 task.wait()
             end
         end)
     end
 })
 
-MainTab:Toggle({
-    Title = "Auto Block",
-    Value = false,
-    Callback = function(state)
-        _G.AutoBlock = state
-        task.spawn(function()
-            local VIM = game:GetService("VirtualInputManager")
-            while _G.AutoBlock do
-                pcall(function()
-                    local char = game.Players.LocalPlayer.Character
-                    if char and char:FindFirstChild("HumanoidRootPart") then
-                        local shouldBlock = false
-                        for _, v in pairs(game.Players:GetPlayers()) do
-                            if v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
-                                if (char.HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude < 18 then
-                                    shouldBlock = true break
-                                end
-                            end
-                        end
-                        VIM:SendKeyEvent(shouldBlock, Enum.KeyCode.F, false, game)
-                    end
-                end)
-                task.wait(0.1)
-            end
-        end)
-    end
-})
-
-MainTab:Section({ Title = "Visuals" })
-
-MainTab:Toggle({
-    Title = "Fullbright & No Shadow",
-    Value = false,
-    Callback = function(state)
-        _G.FullBright = state
-        task.spawn(function()
-            while _G.FullBright do
-                game.Lighting.Brightness = 2
-                game.Lighting.GlobalShadows = false
-                game.Lighting.ClockTime = 14
-                task.wait(0.5)
-            end
-        end)
-    end
-})
-
---- LAG FIXES ---
-
-LagTab:Section({ Title = "Visual Enhancement" })
-
-LagTab:Button({
-    Title = "Full Graphics Upgrade",
-    Callback = function()
-        pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-FULL-GRAPHIC-UPGRADE-4582"))() end)
-    end
-})
-
-LagTab:Section({ Title = "Optimization" })
-
-LagTab:Button({
-    Title = "Remove Textures",
-    Callback = function()
-        pcall(function()
-            for _, v in pairs(game:GetDescendants()) do
-                if v:IsA("Texture") or v:IsA("Decal") then v:Destroy() end
-            end
-        end)
-    end
-})
-
---- TECH & HUB (ORIGINAL SCRIPTS) ---
-
-TechTab:Toggle({ Title = "Instant twisted", Callback = function(s) if s then pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/yqantg-pixel/Find/refs/heads/main/Protected_3334988263341522.lua.txt"))() end) end end })
-HubTab:Button({ Title = "MinhNhat", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-MinhNhat-Tsb-62161"))() end) end })
-AccessoryTab:Button({ Title = "Headless and Korblox", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-tsb-client-sided-headless-and-korblox-74593"))() end) end })
-
---- SETTINGS SECTION ---
-
-SettingsTab:Section({ Title = "Server & Utility" })
-
-local antiAfkConnection
-SettingsTab:Toggle({
-    Title = "Anti-AFK",
-    Value = false,
+--- TECH SECTION (RESTORED) ---
+TechTab:Toggle({
+    Title = "Instant twisted",
     Callback = function(state)
         if state then
-            antiAfkConnection = game.Players.LocalPlayer.Idled:Connect(function()
-                game:GetService("VirtualUser"):CaptureController()
-                game:GetService("VirtualUser"):ClickButton2(Vector2.new())
-            end)
-        else
-            if antiAfkConnection then antiAfkConnection:Disconnect() end
-        end
-    end
-})
-
-SettingsTab:Button({
-    Title = "Server Hop",
-    Callback = function()
-        local Servers = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100"))
-        for _, v in pairs(Servers.data) do
-            if v.playing < v.maxPlayers and v.id ~= game.JobId then
-                game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, v.id)
-                break
+            local parts = {"aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2xldHVh","bmtpZXQwOTgxMjM0NS1jbXlrL1Rlc3RraWJhL3JlZnMvaGVhZHMv","bWFpbi9lZGZhMzg1ZWY1YzQ3ZDNhLmx1YQ=="}
+            local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+            local function d(data)
+                data = data:gsub('[^'..b..'=]', '')
+                return (data:gsub('.', function(x)
+                    if x == '=' then return '' end
+                    local r, f = '', (b:find(x) - 1)
+                    for i = 6, 1, -1 do r = r .. (f % 2^i - f % 2^(i-1) > 0 and '1' or '0') end
+                    return r
+                end):gsub('%d%d%d?%d?%d?%d?%d?%d?', function(x)
+                    if #x ~= 8 then return '' end
+                    local c = 0
+                    for i = 1, 8 do c = c + (x:sub(i, i) == '1' and 2^(8-i) or 0) end
+                    return string.char(c)
+                end))
             end
+            pcall(function() loadstring(game:HttpGet(d(table.concat(parts))))() end)
         end
     end
 })
+TechTab:Toggle({ Title = "Instant lethal", Callback = function(s) if s then pcall(function() loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/57a4d240a2440f0450986c966469092ccfb8d4797392cb8f469fa8b6e605e64d/download"))() end) end end })
+TechTab:Toggle({ Title = "Oreo", Callback = function(s) if s then pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/dinhthanhtuankiet1762009-sudo/Js/refs/heads/main/dd8ef3753bbaf2b2.lua"))() end) end end })
+TechTab:Toggle({ Title = "kiba", Callback = function(s) if s then pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/yqantg-pixel/Find/refs/heads/main/Protected_3334988263341522.lua.txt"))() end) end end })
 
-SettingsTab:Button({ Title = "Rejoin Server", Callback = function() game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer) end })
-SettingsTab:Button({ Title = "Destroy UI", Callback = function() Window:Destroy() end })
+--- HUB SECTION (RESTORED) ---
+HubTab:Button({ Title = "Lunar", Callback = function() pcall(function() loadstring(game:HttpGet("https://pastefy.app/ADhVPN6M/raw"))() end) end })
+HubTab:Button({ Title = "MinhNhat", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-MinhNhat-Tsb-62161"))() end) end })
+
+--- ACCESSORY SECTION (RESTORED) ---
+AccessoryTab:Button({ Title = "Headless and Korblox", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-tsb-client-sided-headless-and-korblox-74593"))() end) end })
+AccessoryTab:Button({ Title = "Erisyphia staff", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Erisyphia-Staff-made-by-Guestly"))() end) end })
+AccessoryTab:Button({ Title = "Friery Horns", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Fiery-Horns-of-the-Netherworld-made-by-Guestly"))() end) end })
+
+--- LAG FIXES & SETTINGS ---
+LagTab:Button({ Title = "Full Graphics Upgrade", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-FULL-GRAPHIC-UPGRADE-4582"))() end) end })
+SettingsTab:Toggle({ Title = "Anti-AFK", Callback = function(state) if state then _G.AFK = game.Players.LocalPlayer.Idled:Connect(function() game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame) task.wait(1) game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame) end) else if _G.AFK then _G.AFK:Disconnect() end end end })
+SettingsTab:Button({ Title = "Server Hop", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/78n/rejoin/main/hop.lua"))() end) end })
+SettingsTab:Button({ Title = "Rejoin", Callback = function() game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId) end })
 
 MainTab:Select()
