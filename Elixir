@@ -25,13 +25,40 @@ local AccessoryTab = Window:Tab({ Title = "Accessory", Icon = "package", Locked 
 local LagTab = Window:Tab({ Title = "Lag Fixes", Icon = "zap", Locked = false })
 local SettingsTab = Window:Tab({ Title = "Settings", Icon = "settings", Locked = false })
 
---- MAIN SECTION ---
+--- MAIN SECTION (WALKSPEED REMOVED - MOBILITY FIXED) ---
 MainTab:Section({ Title = "Combat & Movement" })
 
--- Fly GUI is now the primary movement tool
 MainTab:Button({
     Title = "Open Fly GUI (v3)",
     Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Gui-Fly-v3-37111"))() end) end
+})
+
+MainTab:Button({
+    Title = "Get TP Tool",
+    Detail = "Click anywhere to teleport instantly",
+    Callback = function()
+        local mouse = game.Players.LocalPlayer:GetMouse()
+        local tool = Instance.new("Tool")
+        tool.RequiresHandle = false
+        tool.Name = "TP Tool"
+        tool.Activated:Connect(function()
+            local pos = mouse.Hit.p
+            game.Players.LocalPlayer.Character:MoveTo(pos + Vector3.new(0, 3, 0))
+        end)
+        tool.Parent = game.Players.LocalPlayer.Backpack
+    end
+})
+
+MainTab:Toggle({
+    Title = "Infinite Jump",
+    Callback = function(s)
+        _G.InfJump = s
+        game:GetService("UserInputService").JumpRequest:Connect(function()
+            if _G.InfJump then
+                game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+            end
+        end)
+    end
 })
 
 local AimlockEnabled = false
@@ -63,7 +90,7 @@ MainTab:Toggle({
     end
 })
 
---- TECH SECTION ---
+--- TECH SECTION (RESTORED) ---
 TechTab:Toggle({
     Title = "Instant twisted",
     Callback = function(state)
