@@ -2,17 +2,24 @@ local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/rel
 
 local Window = WindUI:CreateWindow({
     Title = "Elixir-Ogii hub",
-    Icon = "", 
+    Icon = "car-front", 
     Author = "by .ftgs and .ftgs",
     
+    -- THEME SETTINGS TO MATCH THE IMAGE
+    Theme = {
+        Accent = Color3.fromHex("00FF88"), -- Neon Green Glow
+        Background = Color3.fromHex("0A0A0A"), -- Dark Night Background
+        Transparency = 0.2 -- Glass effect
+    },
+
     OpenButton = {
         Title = "Open Ogii's Script",
-        Icon = "monitor",
+        Icon = "car-front",
         CornerRadius = UDim.new(0,16),
         StrokeThickness = 2,
         Color = ColorSequence.new(
-            Color3.fromHex("FF0F7B"), 
-            Color3.fromHex("F89B29")
+            Color3.fromHex("00FF88"), -- Bright Neon Green
+            Color3.fromHex("004422")  -- Dark Forest Green
         ),
         OnlyMobile = false,
         Enabled = true,
@@ -20,7 +27,7 @@ local Window = WindUI:CreateWindow({
     }
 })
 
--- WELCOME NOTIFICATION
+-- WELCOME NOTIFICATION (NEON THEMED)
 WindUI:Notify({
     Title = "Elixir-Ogii hub",
     Content = "Welcome To My Script",
@@ -28,21 +35,20 @@ WindUI:Notify({
 })
 
 -- TABS
-local MainTab = Window:Tab({ Title = "Main", Icon = "bird", Locked = false })
-local TechTab = Window:Tab({ Title = "Tech", Icon = "cpu", Locked = false })
-local HubTab = Window:Tab({ Title = "Hub section", Icon = "layout-grid", Locked = false })
-local AccessoryTab = Window:Tab({ Title = "Accessory", Icon = "package", Locked = false })
-local SettingsTab = Window:Tab({ Title = "Settings", Icon = "settings", Locked = false })
+local MainTab = Window:Tab({ Title = "Main", Icon = "bird" })
+local TechTab = Window:Tab({ Title = "Tech", Icon = "cpu" })
+local HubTab = Window:Tab({ Title = "Hub section", Icon = "layout-grid" })
+local AccessoryTab = Window:Tab({ Title = "Accessory", Icon = "package" })
+local SettingsTab = Window:Tab({ Title = "Settings", Icon = "settings" })
 
---- TECH SECTION (TOGGLES) ---
+--- TECH SECTION (NEON TOGGLES) ---
 
 TechTab:Toggle({
     Title = "Instant twisted",
-    Detail = "Executes twisted Base64 source",
+    Detail = "Neon Tech source",
     Value = false,
     Callback = function(state)
         if state then
-            WindUI:Notify({Title = "Tech", Content = "Executing...", Duration = 3})
             local parts = {"aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2xldHVh","bmtpZXQwOTgxMjM0NS1jbXlrL1Rlc3RraWJhL3JlZnMvaGVhZHMv","bWFpbi9lZGZhMzg1ZWY1YzQ3ZDNhLmx1YQ=="}
             local encoded = table.concat(parts)
             local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
@@ -67,80 +73,48 @@ TechTab:Toggle({
 
 TechTab:Toggle({
     Title = "Instant lethal",
-    Detail = "Executes lethal Jnkie API",
     Value = false,
     Callback = function(state)
-        if state then
-            WindUI:Notify({Title = "Tech", Content = "Executing...", Duration = 3})
-            pcall(function() loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/57a4d240a2440f0450986c966469092ccfb8d4797392cb8f469fa8b6e605e64d/download"))() end)
-        end
+        if state then pcall(function() loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/57a4d240a2440f0450986c966469092ccfb8d4797392cb8f469fa8b6e605e64d/download"))() end) end
     end
 })
 
 TechTab:Toggle({
     Title = "Oreo",
-    Detail = "Executes Oreo source",
     Value = false,
     Callback = function(state)
-        if state then
-            WindUI:Notify({Title = "Tech", Content = "Executing Oreo...", Duration = 3})
-            pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/dinhthanhtuankiet1762009-sudo/Js/refs/heads/main/dd8ef3753bbaf2b2.lua"))() end)
-        end
+        if state then pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/dinhthanhtuankiet1762009-sudo/Js/refs/heads/main/dd8ef3753bbaf2b2.lua"))() end) end
     end
 })
 
 TechTab:Toggle({
     Title = "kiba",
-    Detail = "Executes kiba source",
     Value = false,
     Callback = function(state)
-        if state then
-            WindUI:Notify({Title = "Tech", Content = "Executing kiba...", Duration = 3})
-            pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/yqantg-pixel/Find/refs/heads/main/Protected_3334988263341522.lua.txt"))() end)
-        end
+        if state then pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/yqantg-pixel/Find/refs/heads/main/Protected_3334988263341522.lua.txt"))() end) end
     end
 })
 
---- HUB SECTION (BUTTONS) ---
+--- HUB & ACCESSORY BUTTONS ---
 
 HubTab:Button({
     Title = "Lunar",
-    Callback = function()
-        WindUI:Notify({Title = "Hub", Content = "Loading Lunar...", Duration = 3})
-        pcall(function() loadstring(game:HttpGet("https://pastefy.app/ADhVPN6M/raw"))() end)
-    end
+    Callback = function() pcall(function() loadstring(game:HttpGet("https://pastefy.app/ADhVPN6M/raw"))() end) end
 })
 
 HubTab:Button({
     Title = "MinhNhat",
-    Callback = function()
-        WindUI:Notify({Title = "Hub", Content = "Loading MinhNhat...", Duration = 3})
-        pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-MinhNhat-Tsb-62161"))() end)
-    end
+    Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-MinhNhat-Tsb-62161"))() end) end
 })
-
---- ACCESSORY SECTION (BUTTONS) ---
 
 AccessoryTab:Button({
     Title = "Headless and Korblox",
-    Callback = function()
-        WindUI:Notify({Title = "Accessory", Content = "Applying effects...", Duration = 3})
-        pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-tsb-client-sided-headless-and-korblox-74593"))() end)
-    end
-})
-
-AccessoryTab:Button({
-    Title = "Erisyphia staff",
-    Callback = function()
-        WindUI:Notify({Title = "Accessory", Content = "Loading Staff...", Duration = 3})
-        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Erisyphia-Staff-made-by-Guestly"))() end)
-    end
+    Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-tsb-client-sided-headless-and-korblox-74593"))() end) end
 })
 
 AccessoryTab:Button({
     Title = "Elemental Crystal Shoulder",
     Callback = function()
-        WindUI:Notify({Title = "Accessory", Content = "Equipping Crystal...", Duration = 3})
         pcall(function()
             local player = game:GetService("Players").LocalPlayer
             local character = player.Character or player.CharacterAdded:Wait()
@@ -159,41 +133,36 @@ AccessoryTab:Button({
     end
 })
 
-AccessoryTab:Button({
-    Title = "Friery Horns",
-    Callback = function()
-        WindUI:Notify({Title = "Accessory", Content = "Loading Horns...", Duration = 3})
-        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Fiery-Horns-of-the-Netherworld-made-by-Guestly"))() end)
-    end
-})
-
---- SETTINGS SECTION ---
+--- SETTINGS (CUSTOMIZATION) ---
 
 SettingsTab:Section({ Title = "Customize Hub" })
 
 SettingsTab:Colorpicker({
     Title = "Accent Color",
-    Default = Color3.fromHex("FF0F7B"),
+    Default = Color3.fromHex("00FF88"),
     Callback = function(color)
-        Window:SetColor(color)
+        WindUI:SetTheme({ Accent = color })
     end
 })
 
 SettingsTab:Slider({
     Title = "Transparency",
-    Step = 1, Min = 0, Max = 100, Default = 0,
+    Step = 1, Min = 0, Max = 95, Default = 20,
     Callback = function(value)
-        Window:SetTransparency(value / 100)
+        pcall(function()
+            for _, v in pairs(game:GetService("CoreGui"):GetChildren()) do
+                if v:IsA("ScreenGui") and v.Name:find("WindUI") then
+                    local main = v:FindFirstChild("Main", true) or v:FindFirstChild("Container", true)
+                    if main then main.BackgroundTransparency = value / 100 end
+                end
+            end
+        end)
     end
 })
 
-SettingsTab:Section({ Title = "System" })
-
 SettingsTab:Button({
     Title = "Destroy UI",
-    Callback = function()
-        Window:Destroy()
-    end
+    Callback = function() Window:Destroy() end
 })
 
 MainTab:Select()
