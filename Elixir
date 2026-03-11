@@ -17,6 +17,13 @@ local Window = WindUI:CreateWindow({
     }
 })
 
+-- Welcome Message Fixed
+WindUI:Notify({
+    Title = "Elixir-Ogii hub",
+    Content = "Welcome To My Script",
+    Duration = 5
+})
+
 -- TABS
 local MainTab = Window:Tab({ Title = "Main", Icon = "bird", Locked = false })
 local TechTab = Window:Tab({ Title = "Tech", Icon = "cpu", Locked = false })
@@ -70,6 +77,7 @@ TechTab:Toggle({
         end
     end
 })
+
 TechTab:Toggle({ Title = "Instant lethal", Callback = function(s) if s then pcall(function() loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/57a4d240a2440f0450986c966469092ccfb8d4797392cb8f469fa8b6e605e64d/download"))() end) end end })
 TechTab:Toggle({ Title = "Oreo", Callback = function(s) if s then pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/dinhthanhtuankiet1762009-sudo/Js/refs/heads/main/dd8ef3753bbaf2b2.lua"))() end) end end })
 TechTab:Toggle({ Title = "kiba", Callback = function(s) if s then pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/yqantg-pixel/Find/refs/heads/main/Protected_3334988263341522.lua.txt"))() end) end end })
