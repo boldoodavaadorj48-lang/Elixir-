@@ -30,6 +30,7 @@ local TechTab = Window:Tab({ Title = "Tech", Icon = "cpu", Locked = false })
 local HubTab = Window:Tab({ Title = "Hub section", Icon = "layout-grid", Locked = false })
 local BloxFruitTab = Window:Tab({ Title = "Blox Fruit: Bounty Hunt", Icon = "sword", Locked = false })
 local DeadrailTab = Window:Tab({ Title = "deadrail", Icon = "skull", Locked = false })
+local BabftTab = Window:Tab({ Title = "Babft", Icon = "anchor", Locked = false })
 local AccessoryTab = Window:Tab({ Title = "Accessory", Icon = "package", Locked = false })
 local LagTab = Window:Tab({ Title = "Lag Fixes", Icon = "zap", Locked = false })
 local SettingsTab = Window:Tab({ Title = "Settings", Icon = "settings", Locked = false })
@@ -117,6 +118,18 @@ DeadrailTab:Button({
     Callback = function()
         pcall(function() 
             loadstring(game:HttpGet('https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/TheFastestBondStealer.lua'))() 
+        end)
+    end
+})
+
+--- BABFT SECTION ---
+BabftTab:Section({ Title = "Build A Boat Tools" })
+
+BabftTab:Button({
+    Title = "Auto Builder",
+    Callback = function() 
+        pcall(function()
+            loadstring(game:HttpGet(("https://raw.githubusercontent.com/catblox1346/StensUIReMake/refs/heads/main/Script/boatbuilderhub_B1"),true))()
         end)
     end
 })
