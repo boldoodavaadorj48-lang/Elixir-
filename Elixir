@@ -102,6 +102,16 @@ BloxFruitTab:Button({
     end
 })
 
+BloxFruitTab:Button({
+    Title = "Redz",
+    Detail = "Redz Hub Loader",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/huy384/redzHub/refs/heads/main/redzHub.lua"))()
+        end)
+    end
+})
+
 --- ACCESSORY SECTION ---
 AccessoryTab:Section({ Title = "Visuals" })
 AccessoryTab:Button({ Title = "Headless and Korblox", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-tsb-client-sided-headless-and-korblox-74593"))() end) end })
