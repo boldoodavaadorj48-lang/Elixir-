@@ -17,7 +17,7 @@ local Window = WindUI:CreateWindow({
     }
 })
 
--- Welcome Message Fixed
+-- Welcome Notification
 WindUI:Notify({
     Title = "Elixir-Ogii hub",
     Content = "Welcome To My Script",
@@ -28,6 +28,7 @@ WindUI:Notify({
 local MainTab = Window:Tab({ Title = "Main", Icon = "bird", Locked = false })
 local TechTab = Window:Tab({ Title = "Tech", Icon = "cpu", Locked = false })
 local HubTab = Window:Tab({ Title = "Hub section", Icon = "layout-grid", Locked = false })
+local BloxFruitTab = Window:Tab({ Title = "Blox Fruit: Bounty Hunt", Icon = "sword", Locked = false })
 local AccessoryTab = Window:Tab({ Title = "Accessory", Icon = "package", Locked = false })
 local LagTab = Window:Tab({ Title = "Lag Fixes", Icon = "zap", Locked = false })
 local SettingsTab = Window:Tab({ Title = "Settings", Icon = "settings", Locked = false })
@@ -86,6 +87,20 @@ TechTab:Toggle({ Title = "kiba", Callback = function(s) if s then pcall(function
 HubTab:Section({ Title = "Other Hubs" })
 HubTab:Button({ Title = "Lunar", Callback = function() pcall(function() loadstring(game:HttpGet("https://pastefy.app/ADhVPN6M/raw"))() end) end })
 HubTab:Button({ Title = "MinhNhat", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-MinhNhat-Tsb-62161"))() end) end })
+
+--- BLOX FRUIT SECTION ---
+BloxFruitTab:Section({ Title = "PVP & Bounty" })
+
+BloxFruitTab:Button({
+    Title = "Auto bounty hunt",
+    Detail = "Hermanos Hub (PVP Mode)",
+    Callback = function()
+        pcall(function()
+            getgenv().script_mode = "PVP"
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/hermanos-dev/hermanos-hub/refs/heads/main/Loader.lua"))()
+        end)
+    end
+})
 
 --- ACCESSORY SECTION ---
 AccessoryTab:Section({ Title = "Visuals" })
