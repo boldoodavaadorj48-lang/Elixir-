@@ -29,6 +29,7 @@ local MainTab = Window:Tab({ Title = "Main", Icon = "bird", Locked = false })
 local TechTab = Window:Tab({ Title = "Tech", Icon = "cpu", Locked = false })
 local HubTab = Window:Tab({ Title = "Hub section", Icon = "layout-grid", Locked = false })
 local BloxFruitTab = Window:Tab({ Title = "Blox Fruit: Bounty Hunt", Icon = "sword", Locked = false })
+local DeadrailTab = Window:Tab({ Title = "deadrail", Icon = "skull", Locked = false })
 local AccessoryTab = Window:Tab({ Title = "Accessory", Icon = "package", Locked = false })
 local LagTab = Window:Tab({ Title = "Lag Fixes", Icon = "zap", Locked = false })
 local SettingsTab = Window:Tab({ Title = "Settings", Icon = "settings", Locked = false })
@@ -93,7 +94,6 @@ BloxFruitTab:Section({ Title = "PVP & Bounty" })
 
 BloxFruitTab:Button({
     Title = "Auto bounty hunt",
-    Detail = "Hermanos Hub (PVP Mode)",
     Callback = function()
         pcall(function()
             getgenv().script_mode = "PVP"
@@ -104,10 +104,19 @@ BloxFruitTab:Button({
 
 BloxFruitTab:Button({
     Title = "Redz",
-    Detail = "Redz Hub Loader",
     Callback = function()
-        pcall(function()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/huy384/redzHub/refs/heads/main/redzHub.lua"))()
+        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/huy384/redzHub/refs/heads/main/redzHub.lua"))() end)
+    end
+})
+
+--- DEADRAIL SECTION ---
+DeadrailTab:Section({ Title = "Farming" })
+
+DeadrailTab:Button({
+    Title = "Bond farm/Bond stealer",
+    Callback = function()
+        pcall(function() 
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/TheFastestBondStealer.lua'))() 
         end)
     end
 })
