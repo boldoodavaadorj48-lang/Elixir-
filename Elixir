@@ -1,4 +1,5 @@
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+local VirtualInputManager = game:GetService("VirtualInputManager")
 
 local Window = WindUI:CreateWindow({
     Title = "Elixir-Ogii hub",
@@ -55,6 +56,44 @@ MainTab:Button({
 
 --- TECH SECTION ---
 TechTab:Section({ Title = "Tech Scripts" })
+
+-- LOOP DASH LOGIC
+_G.LoopDashActive = false
+local function DoLoopDash()
+    if not _G.LoopDashActive then return end
+    local Camera = workspace.CurrentCamera
+    
+    -- Simulate Dash (W + Q)
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.W, false, game)
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+    
+    task.wait(0.05)
+    -- Instant 180 Flick
+    Camera.CFrame = Camera.CFrame * CFrame.Angles(0, math.rad(180), 0)
+    
+    task.wait(0.1)
+    -- Auto M1 to hit back
+    VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 0)
+    
+    -- Release Keys
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.W, false, game)
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Q, false, game)
+end
+
+TechTab:Toggle({
+    Title = "Enable Loop Dash Tech",
+    Callback = function(state)
+        _G.LoopDashActive = state
+    end
+})
+
+TechTab:Button({
+    Title = "Execute Loop Dash",
+    Detail = "Press while hugging opponent",
+    Callback = function()
+        DoLoopDash()
+    end
+})
 
 TechTab:Toggle({
     Title = "Instant twisted",
@@ -149,6 +188,6 @@ LagTab:Button({ Title = "Full Graphics Upgrade", Callback = function() pcall(fun
 SettingsTab:Section({ Title = "System" })
 SettingsTab:Toggle({ Title = "Anti-AFK", Callback = function(state) if state then _G.AFK = game.Players.LocalPlayer.Idled:Connect(function() game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame) task.wait(1) game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame) end) else if _G.AFK then _G.AFK:Disconnect() end end end })
 SettingsTab:Button({ Title = "Server Hop", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/78n/rejoin/main/hop.lua"))() end) end })
-SettingsTab:Button({ Title = "Rejoin", Callback = function() game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId) end })
+SettingsTab:Button( { Title = "Rejoin", Callback = function() game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId) end })
 
 MainTab:Select()
