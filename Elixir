@@ -1,5 +1,4 @@
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
-local VirtualInputManager = game:GetService("VirtualInputManager")
 
 local Window = WindUI:CreateWindow({
     Title = "Elixir-Ogii hub",
@@ -33,6 +32,7 @@ local BloxFruitTab = Window:Tab({ Title = "Blox Fruit: Bounty Hunt", Icon = "swo
 local DeadrailTab = Window:Tab({ Title = "deadrail", Icon = "skull", Locked = false })
 local BabftTab = Window:Tab({ Title = "Babft", Icon = "anchor", Locked = false })
 local AccessoryTab = Window:Tab({ Title = "Accessory", Icon = "package", Locked = false })
+local VisualTab = Window:Tab({ Title = "Visual", Icon = "eye", Locked = false })
 local LagTab = Window:Tab({ Title = "Lag Fixes", Icon = "zap", Locked = false })
 local SettingsTab = Window:Tab({ Title = "Settings", Icon = "settings", Locked = false })
 
@@ -55,43 +55,15 @@ MainTab:Button({
 })
 
 --- TECH SECTION ---
-TechTab:Section({ Title = "Tech Scripts" })
-
--- LOOP DASH LOGIC
-_G.LoopDashActive = false
-local function DoLoopDash()
-    if not _G.LoopDashActive then return end
-    local Camera = workspace.CurrentCamera
-    
-    -- Simulate Dash (W + Q)
-    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.W, false, game)
-    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Q, false, game)
-    
-    task.wait(0.05)
-    -- Instant 180 Flick
-    Camera.CFrame = Camera.CFrame * CFrame.Angles(0, math.rad(180), 0)
-    
-    task.wait(0.1)
-    -- Auto M1 to hit back
-    VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 0)
-    
-    -- Release Keys
-    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.W, false, game)
-    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Q, false, game)
-end
-
-TechTab:Toggle({
-    Title = "Enable Loop Dash Tech",
-    Callback = function(state)
-        _G.LoopDashActive = state
-    end
-})
+TechTab:Section({ Title = "TSB Tech Scripts" })
 
 TechTab:Button({
-    Title = "Execute Loop Dash",
-    Detail = "Press while hugging opponent",
+    Title = "Loopdash",
+    Detail = "Loads Loopdash Tech",
     Callback = function()
-        DoLoopDash()
+        pcall(function()
+            loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/28513f51c0ca2c03d4d7d94f59215d13ce1a2a470bf187f0a685b58ccb4dae98/download"))()
+        end)
     end
 })
 
@@ -143,7 +115,7 @@ BloxFruitTab:Button({
 })
 
 BloxFruitTab:Button({
-    Title = "Redz",
+    Title = "Redz Hub",
     Callback = function()
         pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/huy384/redzHub/refs/heads/main/redzHub.lua"))() end)
     end
@@ -174,10 +146,58 @@ BabftTab:Button({
 })
 
 --- ACCESSORY SECTION ---
-AccessoryTab:Section({ Title = "Visuals" })
+AccessoryTab:Section({ Title = "Visual Accessories" })
 AccessoryTab:Button({ Title = "Headless and Korblox", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-tsb-client-sided-headless-and-korblox-74593"))() end) end })
 AccessoryTab:Button({ Title = "Erisyphia staff", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Erisyphia-Staff-made-by-Guestly"))() end) end })
-AccessoryTab:Button({ Title = "Friery Horns", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Fiery-Horns-of-the-Netherworld-made-by-Guestly"))() end) end })
+AccessoryTab:Button({ Title = "Fiery Horns", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Fiery-Horns-of-the-Netherworld-made-by-Guestly"))() end) end })
+
+--- VISUAL SECTION ---
+VisualTab:Section({ Title = "Dragon Level Threat" })
+
+_G.DragonTitleActive = false
+local function createTitle(char)
+    if not _G.DragonTitleActive then return end
+    local head = char:WaitForChild("Head")
+    
+    if head:FindFirstChild("LocalDragonTitleSmall") then
+        head.LocalDragonTitleSmall:Destroy()
+    end
+
+    local billboard = Instance.new("BillboardGui")
+    billboard.Name = "LocalDragonTitleSmall"
+    billboard.Size = UDim2.new(0, 150, 0, 40)
+    billboard.Adornee = head
+    billboard.ExtentsOffset = Vector3.new(0, 2.8, 0)
+    billboard.AlwaysOnTop = true
+    billboard.Parent = head
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.BackgroundTransparency = 1
+    label.Text = "[DRAGON LEVEL THREAT]"
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextStrokeTransparency = 0.2
+    label.Font = Enum.Font.SourceSansBold
+    label.TextSize = 18
+    label.Parent = billboard
+end
+
+VisualTab:Toggle({
+    Title = "Dragon Level Threat",
+    Callback = function(state)
+        _G.DragonTitleActive = state
+        local player = game.Players.LocalPlayer
+        if state then
+            if player.Character then createTitle(player.Character) end
+            _G.TitleConnection = player.CharacterAdded:Connect(createTitle)
+        else
+            if _G.TitleConnection then _G.TitleConnection:Disconnect() end
+            if player.Character and player.Character:FindFirstChild("Head") and player.Character.Head:FindFirstChild("LocalDragonTitleSmall") then
+                player.Character.Head.LocalDragonTitleSmall:Destroy()
+            end
+        end
+    end
+})
 
 --- LAG FIXES ---
 LagTab:Section({ Title = "Optimization" })
@@ -188,6 +208,6 @@ LagTab:Button({ Title = "Full Graphics Upgrade", Callback = function() pcall(fun
 SettingsTab:Section({ Title = "System" })
 SettingsTab:Toggle({ Title = "Anti-AFK", Callback = function(state) if state then _G.AFK = game.Players.LocalPlayer.Idled:Connect(function() game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame) task.wait(1) game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame) end) else if _G.AFK then _G.AFK:Disconnect() end end end })
 SettingsTab:Button({ Title = "Server Hop", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/78n/rejoin/main/hop.lua"))() end) end })
-SettingsTab:Button( { Title = "Rejoin", Callback = function() game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId) end })
+SettingsTab:Button({ Title = "Rejoin", Callback = function() game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId) end })
 
 MainTab:Select()
