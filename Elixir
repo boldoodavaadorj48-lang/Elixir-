@@ -20,7 +20,7 @@ local Window = WindUI:CreateWindow({
 -- Welcome Notification
 WindUI:Notify({
     Title = "Elixir-Ogii hub",
-    Content = "Welcome To My Script",
+    Content = "Everything Loaded Perfectly",
     Duration = 5
 })
 
@@ -38,34 +38,13 @@ local SettingsTab = Window:Tab({ Title = "Settings", Icon = "settings", Locked =
 
 --- MAIN SECTION ---
 MainTab:Section({ Title = "Combat & Movement" })
-
-MainTab:Button({
-    Title = "Aimlock",
-    Detail = "Silent Aim & LockOn",
-    Callback = function() 
-        pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Tsb-Op-Silent-And-LockOn-44541"))() end) 
-    end
-})
-
-MainTab:Button({
-    Title = "Open Fly GUI (v3)",
-    Callback = function() 
-        pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Gui-Fly-v3-37111"))() end) 
-    end
-})
+MainTab:Button({ Title = "Aimlock", Detail = "Silent Aim & LockOn", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Tsb-Op-Silent-And-LockOn-44541"))() end) end })
+MainTab:Button({ Title = "Open Fly GUI (v3)", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Gui-Fly-v3-37111"))() end) end })
 
 --- TECH SECTION ---
 TechTab:Section({ Title = "TSB Tech Scripts" })
-
-TechTab:Button({
-    Title = "Loopdash",
-    Detail = "Loads Loopdash Tech",
-    Callback = function()
-        pcall(function()
-            loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/28513f51c0ca2c03d4d7d94f59215d13ce1a2a470bf187f0a685b58ccb4dae98/download"))()
-        end)
-    end
-})
+TechTab:Button({ Title = "Dripz", Detail = "Not legit do not use it much", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/dinhthanhtuankiet1762009-sudo/Js/refs/heads/main/abd629cbf15379ff.lua"))() end) end })
+TechTab:Button({ Title = "Loopdash", Callback = function() pcall(function() loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/28513f51c0ca2c03d4d7d94f59215d13ce1a2a470bf187f0a685b58ccb4dae98/download"))() end) end })
 
 TechTab:Toggle({
     Title = "Instant twisted",
@@ -91,7 +70,6 @@ TechTab:Toggle({
         end
     end
 })
-
 TechTab:Toggle({ Title = "Instant lethal", Callback = function(s) if s then pcall(function() loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/57a4d240a2440f0450986c966469092ccfb8d4797392cb8f469fa8b6e605e64d/download"))() end) end end })
 TechTab:Toggle({ Title = "Oreo", Callback = function(s) if s then pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/dinhthanhtuankiet1762009-sudo/Js/refs/heads/main/dd8ef3753bbaf2b2.lua"))() end) end end })
 TechTab:Toggle({ Title = "kiba", Callback = function(s) if s then pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/yqantg-pixel/Find/refs/heads/main/Protected_3334988263341522.lua.txt"))() end) end end })
@@ -103,75 +81,38 @@ HubTab:Button({ Title = "MinhNhat", Callback = function() pcall(function() loads
 
 --- BLOX FRUIT SECTION ---
 BloxFruitTab:Section({ Title = "PVP & Bounty" })
-
-BloxFruitTab:Button({
-    Title = "Auto bounty hunt",
-    Callback = function()
-        pcall(function()
-            getgenv().script_mode = "PVP"
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/hermanos-dev/hermanos-hub/refs/heads/main/Loader.lua"))()
-        end)
-    end
-})
-
-BloxFruitTab:Button({
-    Title = "Redz Hub",
-    Callback = function()
-        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/huy384/redzHub/refs/heads/main/redzHub.lua"))() end)
-    end
-})
+BloxFruitTab:Button({ Title = "Auto bounty hunt", Callback = function() pcall(function() getgenv().script_mode = "PVP" loadstring(game:HttpGet("https://raw.githubusercontent.com/hermanos-dev/hermanos-hub/refs/heads/main/Loader.lua"))() end) end })
+BloxFruitTab:Button({ Title = "Redz Hub", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/huy384/redzHub/refs/heads/main/redzHub.lua"))() end) end })
 
 --- DEADRAIL SECTION ---
 DeadrailTab:Section({ Title = "Farming" })
-
-DeadrailTab:Button({
-    Title = "Bond farm/Bond stealer",
-    Callback = function()
-        pcall(function() 
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/TheFastestBondStealer.lua'))() 
-        end)
-    end
-})
+DeadrailTab:Button({ Title = "Bond farm/stealer", Callback = function() pcall(function() loadstring(game:HttpGet('https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/TheFastestBondStealer.lua'))() end) end })
 
 --- BABFT SECTION ---
-BabftTab:Section({ Title = "Build A Boat Tools" })
-
-BabftTab:Button({
-    Title = "Auto Builder",
-    Callback = function() 
-        pcall(function()
-            loadstring(game:HttpGet(("https://raw.githubusercontent.com/catblox1346/StensUIReMake/refs/heads/main/Script/boatbuilderhub_B1"),true))()
-        end)
-    end
-})
+BabftTab:Section({ Title = "Build A Boat" })
+BabftTab:Button({ Title = "Auto Builder", Callback = function() pcall(function() loadstring(game:HttpGet(("https://raw.githubusercontent.com/catblox1346/StensUIReMake/refs/heads/main/Script/boatbuilderhub_B1"),true))() end) end })
 
 --- ACCESSORY SECTION ---
-AccessoryTab:Section({ Title = "Visual Accessories" })
-AccessoryTab:Button({ Title = "Headless and Korblox", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-tsb-client-sided-headless-and-korblox-74593"))() end) end })
+AccessoryTab:Section({ Title = "Visuals" })
+AccessoryTab:Button({ Title = "Headless/Korblox", Callback = function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-tsb-client-sided-headless-and-korblox-74593"))() end) end })
 AccessoryTab:Button({ Title = "Erisyphia staff", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Erisyphia-Staff-made-by-Guestly"))() end) end })
 AccessoryTab:Button({ Title = "Fiery Horns", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GuestlyTheGreatestGuest/Scripts/refs/heads/main/Fiery-Horns-of-the-Netherworld-made-by-Guestly"))() end) end })
 
 --- VISUAL SECTION ---
-VisualTab:Section({ Title = "Dragon Level Threat" })
-
+VisualTab:Section({ Title = "Visual Enhancements" })
 _G.DragonTitleActive = false
 local function createTitle(char)
     if not _G.DragonTitleActive then return end
-    local head = char:WaitForChild("Head")
-    
-    if head:FindFirstChild("LocalDragonTitleSmall") then
-        head.LocalDragonTitleSmall:Destroy()
-    end
-
-    local billboard = Instance.new("BillboardGui")
+    local head = char:WaitForChild("Head", 5)
+    if not head then return end
+    if head:FindFirstChild("LocalDragonTitleSmall") then head.LocalDragonTitleSmall:Destroy() end
+    local billboard = Instance.new("BillboardGui", head)
     billboard.Name = "LocalDragonTitleSmall"
     billboard.Size = UDim2.new(0, 150, 0, 40)
     billboard.Adornee = head
     billboard.ExtentsOffset = Vector3.new(0, 2.8, 0)
     billboard.AlwaysOnTop = true
-    billboard.Parent = head
-
-    local label = Instance.new("TextLabel")
+    local label = Instance.new("TextLabel", billboard)
     label.Size = UDim2.new(1, 0, 1, 0)
     label.BackgroundTransparency = 1
     label.Text = "[DRAGON LEVEL THREAT]"
@@ -179,7 +120,6 @@ local function createTitle(char)
     label.TextStrokeTransparency = 0.2
     label.Font = Enum.Font.SourceSansBold
     label.TextSize = 18
-    label.Parent = billboard
 end
 
 VisualTab:Toggle({
